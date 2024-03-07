@@ -6,10 +6,9 @@ spring:
   profiles:
     active: "prod"
   datasource:
-    url: jdbc:h2:mem:testdb
-    driverClassName: org.h2.Driver
-    username: sa
-    password: ''
+    url: jdbc:mysql://localhost:3307/loansdb
+    username: root
+    password: root
   jpa:
     show-sql: true
   sql:
@@ -17,17 +16,13 @@ spring:
       mode: always
   config:
     import: "optional:configserver:http://localhost:8071/"
-  rabbitmq:
-    host: "localhost"
-    port: 5672
-    username: "guest"
-    password: "guest"
 
-build:
-  version: "3.0"
-  
 management:
   endpoints:
     web:
       exposure:
         include: "*"
+
+build:
+  version: "3.0"
+
