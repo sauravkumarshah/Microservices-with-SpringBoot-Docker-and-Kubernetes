@@ -18,11 +18,13 @@ public class GatewayserverApplication {
 	@Bean
 	public RouteLocator eazyBankRouteConfig(RouteLocatorBuilder routeLocatorBuilder) {
 		return routeLocatorBuilder.routes()
-						.route(p -> p
-								.path("/eazybank/accounts/**")
-								.filters( f -> f.rewritePath("/eazybank/accounts/(?<segment>.*)","/${segment}")
-										.addResponseHeader("X-Response-Time", LocalDateTime.now().toString()))
-								.uri("lb://accounts"))
+				.route(p -> p
+						.path("/eazybank/accounts/**")
+						.filters( f -> f.rewritePath("/eazybank/accounts/(?<segment>.*)","/${segment}")
+								.addResponseHeader("X-Response-Time", LocalDateTime.now().toString())
+								.circuitBreaker(config -> config.setName("accountsCircuitBreaker")
+										.setFallbackUri("forward:/contactSupport")))
+						.uri("lb://ACCOUNTS"))
 					.route(p -> p
 							.path("/eazybank/loans/**")
 							.filters( f -> f.rewritePath("/eazybank/loans/(?<segment>.*)","/${segment}")
