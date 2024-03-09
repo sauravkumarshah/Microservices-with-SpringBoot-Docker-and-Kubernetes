@@ -87,5 +87,8 @@ resilience4j.retry:
       exponentialBackoffMultiplier: 2
       ignoreExceptions:
         - java.lang.NullPointerException
-#      retryExceptions:
-#        - java.util.concurrent.TimeoutException
+      retryExceptions:
+        - java.util.concurrent.TimeoutException
+ 
+# when we mention the retryExceptions then only those exception which are mentioned inside that will be retried so there is not need
+# to mention ignoreExceptions in the above properties
