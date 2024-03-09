@@ -1,5 +1,7 @@
 package com.eazybytes.accounts.controller;
 
+import java.util.concurrent.TimeoutException;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -120,10 +122,11 @@ public class AccountsController {
 			@ApiResponse(responseCode = "500", description = "HTTP Status Internal Server Error", content = @Content(schema = @Schema(implementation = ErrorResponseDto.class))) })
 	@Retry(name = "getBuildInfo", fallbackMethod = "getBuildInfoFallback")
 	@GetMapping("/build-info")
-	public ResponseEntity<String> getBuildInfo() {
+	public ResponseEntity<String> getBuildInfo() throws TimeoutException {
 		logger.debug("getBuildInfo() method Invoked");
-		throw new NullPointerException();
-//		return ResponseEntity.status(HttpStatus.OK).body(buildVersion);
+//		throw new NullPointerException();
+//		throw new TimeoutException();
+		return ResponseEntity.status(HttpStatus.OK).body(buildVersion);
 	}
 
 	/**
