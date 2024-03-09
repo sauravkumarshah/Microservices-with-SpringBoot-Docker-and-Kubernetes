@@ -138,7 +138,9 @@ public class LoansController {
 			@ApiResponse(responseCode = "500", description = "HTTP Status Internal Server Error", content = @Content(schema = @Schema(implementation = ErrorResponseDto.class))) })
 	@GetMapping("/contact-info")
 	public ResponseEntity<LoansContactInfoDto> getContactInfo() {
-		return ResponseEntity.status(HttpStatus.OK).body(loansContactInfoDto);
+		logger.debug("Invoked Loans contact-info API");
+		throw new RuntimeException();
+//		return ResponseEntity.status(HttpStatus.OK).body(loansContactInfoDto);
 	}
 
 }
