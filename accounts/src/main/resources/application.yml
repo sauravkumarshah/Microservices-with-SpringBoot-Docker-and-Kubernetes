@@ -92,3 +92,10 @@ resilience4j.retry:
  
 # when we mention the retryExceptions then only those exception which are mentioned inside that will be retried so there is not need
 # to mention ignoreExceptions in the above properties
+
+resilience4j.ratelimiter:
+  configs:
+    default:
+      timeoutDuration: 1000
+      limitRefreshPeriod: 5000
+      limitForPeriod: 1
