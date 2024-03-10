@@ -1,0 +1,4 @@
+services:
+  accounts:
+    image: "tipsontech/accounts:s4"
+    container_name: accounts-ms
