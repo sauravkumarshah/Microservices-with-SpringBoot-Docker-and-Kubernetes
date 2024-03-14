@@ -7,11 +7,11 @@ spring:
   cloud:
     function:
       definition: email|sms
-#    stream:
-#      bindings:
-#        emailsms-in-0:
-#          destination: send-communication
-#          group: ${spring.application.name}
+    stream:
+      bindings:
+        emailsms-in-0:
+          destination: send-communication
+          group: ${spring.application.name}
 #        emailsms-out-0:
 #          destination: communication-sent
 #  rabbitmq:
