@@ -66,6 +66,18 @@
 			<version>${otelVersion}</version>
 			<scope>runtime</scope>
 		</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-security</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.security</groupId>
+			<artifactId>spring-security-oauth2-resource-server</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.security</groupId>
+			<artifactId>spring-security-oauth2-jose</artifactId>
+		</dependency>
 	</dependencies>
 	<dependencyManagement>
 		<dependencies>
@@ -99,7 +111,7 @@
 				<version>3.3.2</version>
 				<configuration>
 					<to>
-						<image>tipsontech/${project.artifactId}:s11</image>
+						<image>tipsontech/${project.artifactId}:s12</image>
 					</to>
 				</configuration>
 			</plugin>

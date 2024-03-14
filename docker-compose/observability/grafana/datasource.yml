@@ -6,7 +6,6 @@ deleteDatasources:
   - name: Tempo
 
 datasources:
-
   - name: Prometheus
     type: prometheus
     uid: prometheus
@@ -19,7 +18,6 @@ datasources:
     editable: true
     jsonData:
       httpMethod: GET
-
   - name: Tempo
     type: tempo
     uid: tempo
@@ -34,7 +32,6 @@ datasources:
       httpMethod: GET
       serviceMap:
         datasourceUid: 'prometheus'
-        
   - name: Loki
     type: loki
     uid: loki
