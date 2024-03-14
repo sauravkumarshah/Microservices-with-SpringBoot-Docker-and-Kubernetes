@@ -52,17 +52,16 @@ public class AccountsServiceImpl implements IAccountsService {
 
 		Customer savedCustomer = customerRepository.save(customer);
 		Accounts savedAccount = accountsRepository.save(createNewAccount(savedCustomer));
-        sendCommunication(savedAccount, savedCustomer);
+		sendCommunication(savedAccount, savedCustomer);
 	}
-	
 
-    private void sendCommunication(Accounts account, Customer customer) {
-        var accountsMsgDto = new AccountsMsgDto(account.getAccountNumber(), customer.getName(),
-                customer.getEmail(), customer.getMobileNumber());
-        log.info("Sending Communication request for the details: {}", accountsMsgDto);
-        var result = streamBridge.send("sendCommunication-out-0", accountsMsgDto);
-        log.info("Is the Communication request successfully triggered ? : {}", result);
-    }
+	private void sendCommunication(Accounts account, Customer customer) {
+		var accountsMsgDto = new AccountsMsgDto(account.getAccountNumber(), customer.getName(), customer.getEmail(),
+				customer.getMobileNumber());
+		log.info("Sending Communication request for the details: {}", accountsMsgDto);
+		var result = streamBridge.send("sendCommunication-out-0", accountsMsgDto);
+		log.info("Is the Communication request successfully triggered ? : {}", result);
+	}
 
 	/**
 	 * @param customer - Customer Object
@@ -136,6 +135,24 @@ public class AccountsServiceImpl implements IAccountsService {
 		accountsRepository.deleteByCustomerId(customer.getCustomerId());
 		customerRepository.deleteById(customer.getCustomerId());
 		return true;
+	}
+
+	/**
+	 * @param accountNumber - Long
+	 * @return boolean indicating if the update of communication status is
+	 *         successful or not
+	 */
+	@Override
+	public boolean updateCommunicationStatus(Long accountNumber) {
+		boolean isUpdated = false;
+		if (accountNumber != null) {
+			Accounts accounts = accountsRepository.findById(accountNumber).orElseThrow(
+					() -> new ResourceNotFoundException("Account", "AccountNumber", accountNumber.toString()));
+			accounts.setCommunicationSw(true);
+			accountsRepository.save(accounts);
+			isUpdated = true;
+		}
+		return isUpdated;
 	}
 
 }
