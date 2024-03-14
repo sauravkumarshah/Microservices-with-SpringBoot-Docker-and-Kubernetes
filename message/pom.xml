@@ -89,7 +89,7 @@
 				<version>3.3.2</version>
 				<configuration>
 					<to>
-						<image>tipsontech/${project.artifactId}:s13</image>
+						<image>tipsontech/${project.artifactId}:s14</image>
 					</to>
 				</configuration>
 			</plugin>
