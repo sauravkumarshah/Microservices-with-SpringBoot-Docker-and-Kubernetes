@@ -1,4 +1,20 @@
 services:
+  rabbit:
+    image: rabbitmq:3.13-management
+    hostname: rabbitmq
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    healthcheck:
+      test: rabbitmq-diagnostics check_port_connectivity
+      interval: 10s
+      timeout: 5s
+      retries: 10
+      start_period: 5s
+    extends:
+      file: common-config.yml
+      service: network-deploy-service
+
   keycloak:
     image: quay.io/keycloak/keycloak:22.0.1
     container_name: keycloak
@@ -212,7 +228,7 @@ services:
       service: network-deploy-service
 
   configserver:
-    image: "tipsontech/configserver:s12"
+    image: "tipsontech/configserver:s13"
     container_name: configserver-ms
     ports:
       - "8071:8071"
@@ -229,7 +245,7 @@ services:
       OTEL_SERVICE_NAME: "configserver"
 
   eurekaserver:
-    image: "tipsontech/eurekaserver:s12"
+    image: "tipsontech/eurekaserver:s13"
     container_name: eurekaserver-ms
     ports:
       - "8070:8070"
@@ -247,7 +263,7 @@ services:
       OTEL_SERVICE_NAME: "eurekaserver"
 
   accounts:
-    image: "tipsontech/accounts:s12"
+    image: "tipsontech/accounts:s13"
     container_name: accounts-ms
     healthcheck:
       test: "curl --fail --silent localhost:8080/actuator/health/readiness | grep UP || exit 1"
@@ -255,15 +271,19 @@ services:
       timeout: 5s
       retries: 20
       start_period: 10s
+    depends_on:
+      rabbit:
+        condition: service_healthy
     environment:
       SPRING_APPLICATION_NAME: "accounts"
       OTEL_SERVICE_NAME: "accounts"
+      SPRING_RABBITMQ_HOST: "rabbit"
     extends:
       file: common-config.yml
       service: microservice-eureka-config
 
   loans:
-    image: "tipsontech/loans:s12"
+    image: "tipsontech/loans:s13"
     container_name: loans-ms
     healthcheck:
       test: "curl --fail --silent localhost:8090/actuator/health/readiness | grep UP || exit 1"
@@ -279,7 +299,7 @@ services:
       service: microservice-eureka-config
 
   cards:
-    image: "tipsontech/cards:s12"
+    image: "tipsontech/cards:s13"
     container_name: cards-ms
     healthcheck:
       test: "curl --fail --silent localhost:9000/actuator/health/readiness | grep UP || exit 1"
@@ -294,8 +314,20 @@ services:
       file: common-config.yml
       service: microservice-eureka-config
 
+  message:
+    image: "tipsontech/message:s13"
+    container_name: message-ms
+    depends_on:
+      rabbit:
+        condition: service_healthy
+    environment:
+      SPRING_RABBITMQ_HOST: "rabbit"
+    extends:
+      file: common-config.yml
+      service: network-deploy-service
+
   gatewayserver:
-    image: "tipsontech/gatewayserver:s12"
+    image: "tipsontech/gatewayserver:s13"
     container_name: gatewayserver-ms
     ports:
       - "8072:8072"
